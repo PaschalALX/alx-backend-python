@@ -3,6 +3,7 @@
 """
 asynchronous coroutine that takes in an integer argument
 """
+import asyncio
 from typing import List
 wait_random = __import__("0-basic_async_syntax").wait_random
 
@@ -16,7 +17,5 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     Return:
         (float)
     """
-    delays = []
-    for x in range(n):
-        delays.append(await wait_random(max_delay))
-    return sorted(delays)
+    values = await asyncio.gather(*[wait_random(max_delay) for _ in range(n)])
+    return sorted(values)
